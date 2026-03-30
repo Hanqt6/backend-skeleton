@@ -1,7 +1,7 @@
 package com.xiaowushi.skeleton.api.user.service;
 
 import com.xiaowushi.skeleton.api.BizException;
-import com.xiaowushi.skeleton.api.user.mapper.UserMapper;
+import com.xiaowushi.skeleton.api.mapper.UserMapper;
 import com.xiaowushi.skeleton.api.user.model.User;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;

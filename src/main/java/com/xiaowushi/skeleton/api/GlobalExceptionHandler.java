@@ -1,10 +1,11 @@
 package com.xiaowushi.skeleton.api;
 
+import com.xiaowushi.skeleton.api.exception.UnauthorizedException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.bind.MissingServletRequestParameterException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -27,14 +28,19 @@ public class GlobalExceptionHandler {
         return ApiResponse.fail(400, e.getMessage());
     }
 
-    @ExceptionHandler(Exception.class)
-    public ApiResponse<Void> handleOther(Exception e) {
-        return ApiResponse.fail(500, "internal error");
-    }
-
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ApiResponse<Void> handleMissingParam(MissingServletRequestParameterException e) {
         String msg = String.format("missing required parameter: %s", e.getParameterName());
         return ApiResponse.fail(400, msg);
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ApiResponse<Void> handleUnauthorized(UnauthorizedException e) {
+        return ApiResponse.fail(401, e.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ApiResponse<Void> handleOther(Exception e) {
+        return ApiResponse.fail(500, "internal error");
     }
 }

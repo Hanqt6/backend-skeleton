@@ -26,7 +26,7 @@ public class HttpDemoController {
     }
 
     // Header 示例：伪鉴权
-    @GetMapping("/secure/ping")
+    @GetMapping("/secure/demo")
     public ApiResponse<Map<String, Object>> securePing(
             @RequestHeader(value = "Authorization", required = false) String auth
     ) {
