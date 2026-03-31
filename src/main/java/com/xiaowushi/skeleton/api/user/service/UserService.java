@@ -7,6 +7,8 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+
 @Service
 public class UserService {
 
@@ -22,9 +24,30 @@ public class UserService {
         u.setUsername(username);
         try {
             userMapper.insert(u);
-            return u;
+            return userMapper.findById(u.getId());
         } catch (DuplicateKeyException e) {
             throw new BizException(400, "username already exists");
+        }
+    }
+    @Transactional
+    public User createOrGetByUsername(String username) {
+        User existed = userMapper.findByUsername(username);
+        if (existed != null) {
+            return existed;
+        }
+
+        User user = new User();
+        user.setUsername(username);
+
+        try {
+            userMapper.insert(user);
+            return userMapper.findById(user.getId());
+        } catch (DuplicateKeyException e) {
+            User again = userMapper.findByUsername(username);
+            if (again != null) {
+                return again;
+            }
+            throw e;
         }
     }
 
